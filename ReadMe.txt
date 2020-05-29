@@ -18,4 +18,8 @@ v 0.1 - has a working GUI
 		add a minimum and max size for the game
 		consider non-square game grid (i.e. 10x20 instead of only 10x10 or 20x20)
 		animations for falling pieces after gravity is set
-	
+v 0.2 -
+	Added proper win conditions for vertical, horizontal, and "down right/up left" conditions, but not
+		for down left/up right" yet. 
+
+v 0.3 - Glitch found and corrected in diagonal condition; properly checks for up right now.  Next version will have proper up left checking implemented
