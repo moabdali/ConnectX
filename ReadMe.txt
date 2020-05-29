@@ -23,3 +23,5 @@ v 0.2 -
 		for down left/up right" yet. 
 
 v 0.3 - Glitch found and corrected in diagonal condition; properly checks for up right now.  Next version will have proper up left checking implemented
+
+v 0.4 - yet another glitch found in diagonal check - forgot to reset count to zero after each subroutine, not just the main routine.  This has been fixed, along with a working diagonal check in all directions.  This means that as of now, we should have a working connect 4 check.  A tictactoe option will be added in next iteration of the game before adding gravity options.  

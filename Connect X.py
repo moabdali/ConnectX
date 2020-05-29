@@ -57,8 +57,8 @@ def checkForWin(gameBoard,playerTurn):
         
         count = 0
         for j in range (0,columns-lengthOfWin+1):
+            count = 0
             for k in range(0,lengthOfWin):
-                #print(f"i j is {i},{j}")
                 if gameBoard[i-k][j+k] == playerTurn:
                     count+=1
             
@@ -68,7 +68,25 @@ def checkForWin(gameBoard,playerTurn):
         if count >= lengthOfWin:
             return 1337
 
+    maxLen = 0
+    count = 0
+
+    
     #diagonal check up left
+    for i in range(rows-1,lengthOfWin-2,-1):
+        count = 0
+
+        for j in range (columns-1, lengthOfWin-2,-1):
+            count = 0
+            for k in range(0, lengthOfWin):
+                if gameBoard[i-k][j-k] == playerTurn:
+                    count+=1
+
+            if count >= maxLen:
+                maxLen = count
+            if count >= lengthOfWin:
+                return 1337
+            
        
 
 
