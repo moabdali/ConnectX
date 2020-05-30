@@ -5,21 +5,22 @@ def notAnIntTest(number):
     try:
         number = int(number)
     except:
-        print("That is not a valid number")
+        sg.popup("That is not a valid number")
         return None
     return  number
 
-def checkForWin(gameBoard,playerTurn):
-    print(f"It is player {playerTurn}'s turn.")
-    for elements in gameBoard:
-        print(elements)
+def checkForWin(gameBoard,playerTurn, winLength):
+    
+    
         
-    #print(len(gameBoard))
+    
     rows = len(gameBoard)
     columns = len(gameBoard)
-    lengthOfWin = 4
+    lengthOfWin = int(winLength)
     count = 0
     maxLen = 0
+
+    
     #horizontal check
 
     #for each row
@@ -92,16 +93,17 @@ def checkForWin(gameBoard,playerTurn):
 
         
 def makeBoard(size):
-    print("made a board")
+    
     image = 'blank.png'
     board = [ [0 for j in range(size)] for i in range (size)] 
     layout = [ [sg.Button( image_filename=image,key = (i,j),pad=(0,0),size=(4,2) ) for j in range (size)] for i in range (size) ]
-    playBoard = sg.Window("Connect X",layout,keep_on_top=True)
+    playBoard = sg.Window("Connect X",layout,keep_on_top=True).Finalize()
+    playBoard.Maximize()
     gameBoard = [ [0]*size for i in range(size)]
     return playBoard,gameBoard
 
 
-def getInput(playBoard,gameBoard, playerTurn):
+def getInput(playBoard,gameBoard, playerTurn, winLength):
     if playerTurn == 1:
         image = 'p1.png'
     elif playerTurn == 2:
@@ -111,10 +113,8 @@ def getInput(playBoard,gameBoard, playerTurn):
         playBoard.BringToFront()
         event,values = playBoard.read()
         playBoard.BringToFront()
-        print("brought to front")
         if event == None:
             quit()
-        print (event, values)
         if gameBoard[event[0]][event[1]] != 0:
             playBoard.hide()
             sg.popup_timed("That's occupied, you dolt", no_titlebar = True, auto_close_duration=5,keep_on_top=True)
@@ -125,7 +125,7 @@ def getInput(playBoard,gameBoard, playerTurn):
             gameBoard[event[0]][event[1]]=playerTurn
 
         playBoard.refresh()
-        a = checkForWin(gameBoard,playerTurn)
+        a = checkForWin(gameBoard,playerTurn, winLength)
         if a == 1337:
             playBoard.hide()
             sg.popup(f"PLAYER {playerTurn} WINS")
@@ -136,26 +136,47 @@ def getInput(playBoard,gameBoard, playerTurn):
         break
         
     
-def gameLoop(playBoard, gameBoard, playerTurn):
+def gameLoop(playBoard, gameBoard, playerTurn, winLength):
     while True:
         if playerTurn == 1:
             playerTurn = 2
         elif playerTurn == 2:
             playerTurn = 1
         else:
-            print("Error")
+            sg.popup("Error")
             quit()
-        getInput(playBoard, gameBoard, playerTurn)
+        getInput(playBoard, gameBoard, playerTurn, winLength)
     
 
 while True:
-    
-    boardSize = input("What's the length of the board?")
-    returnValue = notAnIntTest(boardSize)
+    gameType = sg.popup_get_text("Do you want to play tic tac toe style or connect 4? \n1. Connect 4\n2. Tic Tac Toe  [doesn't matter what you pick in this version]",keep_on_top=True)
+    returnValue = notAnIntTest(gameType)
     if returnValue != None:
         boardSize = returnValue
     else:
         continue
+    
+    boardSize = sg.popup_get_text("What's the length of the playing field? (minimum 3, maximum 30)",keep_on_top=True)
+    returnValue = notAnIntTest(boardSize)
+    if returnValue != None:
+        if returnValue <3 or returnValue > 30:
+            sg.popup("Nope.")
+            continue
+        boardSize = returnValue
+    else:
+        continue
+    
+    winLength = sg.popup_get_text("How long is a winning line?",keep_on_top=True)
+    returnValue = notAnIntTest(winLength)
+    if returnValue != None:
+        if returnValue > boardSize:
+            sg.popup("It's impossible to win with that combination of settings.\nLine size must be less than or equal to the board game size.")
+            continue
+        winLength = returnValue
+    else:
+        continue
+    
+    
     playBoard,gameBoard = makeBoard(boardSize)
-    gameLoop(playBoard, gameBoard, 2)
+    gameLoop(playBoard, gameBoard, 2, winLength)
     
