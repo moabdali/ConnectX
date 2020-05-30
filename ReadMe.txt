@@ -28,3 +28,15 @@ v 0.4 - yet another glitch found in diagonal check - forgot to reset count to ze
 
 
 v 0.5 - shows popups asking what size you want the playing field to be, what the win length is, and a currently useless option for whether you want connect4 or tictactoe (basically a switch to see if gravity is true or not)
+
+
+
+v 1.0 -
+	Should be a fully functioning connect 4/ Tic Tac Toe game. 
+	Potential improvements:
+	- falling animations
+	- sound
+	- loop to reset game instead of exiting
+	- option to pick your pieces (picture)
+	- show whose turn it is via an avatar
+	- more than 2 players (would require extensive recoding)

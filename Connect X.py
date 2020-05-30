@@ -110,17 +110,11 @@ def checkForWin(gameBoard,playerTurn, winLength):
                 if count >= lengthOfWin:
                     return 1337
                 
-def findEmptySlot(gameBoard, slot):
-    for i in range (0,len(gameBoard)):
-        if gameBoard[slot][i] == 0:
-            continue
-        else:
-            if (i+1 != len(gameBoard)-1 and gameBoard[slot][i+1] != 0):
-                break
+def findEmptySlot(gameBoard, column):
+    for i in range (len(gameBoard)-1,0,-1):
+        if gameBoard[i][column] == 0:
+            return i
         
-    print("i is "+str(i))
-    return i
-       
 
 
 # initialize the boardgame        
@@ -202,8 +196,6 @@ def getInputC4(playBoard,gameBoard, playerTurn, winLength):
         #put the piece in if valid
         else:
             emptySlot = findEmptySlot(gameBoard,event[1])
-            print(type(emptySlot))
-            print(f"Gonna try for {emptySlot},{event[1]}")
             #playBoard[(event[emptySlot],event[1])].update(image_filename=image)
             playBoard[(emptySlot,event[1])].update(image_filename=image)
             gameBoard[emptySlot][event[1]]=playerTurn
