@@ -196,7 +196,8 @@ def getInputC4(playBoard,gameBoard, playerTurn, winLength):
         #put the piece in if valid
         else:
             emptySlot = findEmptySlot(gameBoard,event[1])
-            #playBoard[(event[emptySlot],event[1])].update(image_filename=image)
+            if emptySlot == None:
+                emptySlot = 0
             playBoard[(emptySlot,event[1])].update(image_filename=image)
             gameBoard[emptySlot][event[1]]=playerTurn
         
@@ -230,39 +231,42 @@ def gameLoop(playBoard, gameBoard, playerTurn, winLength, gameType):
     
 
 
-
+defaultValues = False
 while True:
-    gameType = sg.popup_get_text("Do you want to play tic tac toe style or connect 4? \n1. Connect 4\n2. Tic Tac Toe",keep_on_top=True)
-    returnValue = notAnIntTest(gameType)
-    if returnValue != None:
-        gameType = returnValue
-    else:
-        continue
-    
-    
-    boardSize = sg.popup_get_text("What's the length of the playing field? (minimum 3, maximum 30)",keep_on_top=True)
-    returnValue = notAnIntTest(boardSize)
-    if returnValue != None:
-        if returnValue <3 or returnValue > 30:
-            sg.popup("Nope.")
+    gameType = sg.popup_get_text("Do you want to play tic tac toe style or connect 4? \n1. Connect 4\n2. Tic Tac Toe\n\nOr just hit OK for default settings.",keep_on_top=True)
+    if gameType == "":
+        defaultValues = True
+        gameType = 1
+        boardSize = 10
+        winLength = 4
+
+    elif defaultValues == False:
+        returnValue = notAnIntTest(gameType)
+        if returnValue == 1 or returnValue == 2:
+            gameType = returnValue
+        else:
             continue
-        boardSize = returnValue
-    else:
-        continue
-    
-    winLength = sg.popup_get_text("How long is a winning line?",keep_on_top=True)
-    returnValue = notAnIntTest(winLength)
-    if returnValue != None:
-        if returnValue > boardSize:
-            sg.popup("It's impossible to win with that combination of settings.\nLine size must be less than or equal to the board game size.")
+
+        boardSize = sg.popup_get_text("What's the length of the playing field? (minimum 3, maximum 30)\nPlease use a max of 10 if you're using REPL.IT.",keep_on_top=True)
+        returnValue = notAnIntTest(boardSize)
+        if returnValue != None:
+            if returnValue <3 or returnValue > 30:
+                sg.popup("Nope.")
+                continue
+            boardSize = returnValue
+        else:
             continue
-        winLength = returnValue
-    else:
-        continue
-    
+        
+        winLength = sg.popup_get_text("How long is a winning line?",keep_on_top=True)
+        returnValue = notAnIntTest(winLength)
+        if returnValue != None:
+            if returnValue > boardSize:
+                sg.popup("It's impossible to win with that combination of settings.\nLine size must be less than or equal to the board game size.")
+                continue
+            winLength = returnValue
+        else:
+            continue
     
     playBoard,gameBoard = makeBoard(boardSize)
-
-
     gameLoop(playBoard, gameBoard, 2, winLength, gameType)
     

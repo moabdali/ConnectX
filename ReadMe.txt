@@ -40,3 +40,5 @@ v 1.0 -
 	- option to pick your pieces (picture)
 	- show whose turn it is via an avatar
 	- more than 2 players (would require extensive recoding)
+v 1.1	- added a default settings option
+	- added a recommended max size for REPL repositories
